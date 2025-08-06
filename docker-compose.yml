@@ -1,0 +1,21 @@
+services:
+    speedtest-tracker:
+        image: lscr.io/linuxserver/speedtest-tracker:latest
+        restart: unless-stopped
+        container_name: speedtest-tracker
+        ports:
+            - 8080:80
+            - 8443:443
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - APP_KEY=base64:M+ljK/hzJy60l6o6qr8GzgkuZayCCRhPWEWSRxaymVM= 
+# Run the command to generate a key required for encryption and paste it as your APP_KEY value. "echo -n 'base64:'; openssl rand -base64 32;"
+            - DB_CONNECTION=sqlite
+            - DISPLAY_TIMEZONE=Europe/London
+            - SPEEDTEST_SCHEDULE=0 * * * *
+        volumes:
+            - /home/<local>/speedtest-tracker:/config
+            - /home/<local>/speedtest-tracker/ssl-keys:/config/keys
+
+# admin@example.com and password
